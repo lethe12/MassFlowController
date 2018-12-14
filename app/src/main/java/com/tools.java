@@ -427,4 +427,32 @@ import android.annotation.SuppressLint;
 		return temp;
 	}
 
+	public static int calcCheckSum(byte[] buff,int length){
+        int sum = 0;
+        for(int i=0;i<length;i++){
+            sum += (int)buff[i];
+        }
+        return sum;
+    }
+/*
+* 计算校验和并插入数据帧
+* */
+	public static void insertCheckSum(byte [] buff,int length){
+        int sum = calcCheckSum(buff, length);
+        byte high = (byte) ((sum&0x000000f0)>>4);
+        if(high<10){
+            high += 0x30;
+        }else{
+            high += 0x37;
+        }
+        byte low = (byte) (sum&0x0000000f);
+        if(low < 10){
+            low += 0x30;
+        }else{
+            low += 0x37;
+        }
+        buff[length] = high;
+        buff[length+1] = low;
+    }
+
 }
