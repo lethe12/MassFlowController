@@ -15,6 +15,7 @@ import com.grean.massflowcontroller.devices.KoflocDfSeriesListener;
 public class MixGasModel implements KoflocDfSeriesListener{
     private static final String tag = "MixGasModel";
     private MixGasListener listener;
+    private KoflocDfSeriesData seriesData = new KoflocDfSeriesData();
 
     private KoflocDfSeries  device;
 
@@ -24,13 +25,10 @@ public class MixGasModel implements KoflocDfSeriesListener{
         ComManager.getInstance().setListener(0,device);
     }
 
-    public boolean getFlowRate(int id){
-        if((id>0)&&(id<=3)){
-            ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(id),KoflocDfSeries.STATE_ACQUISITION);
-            return true;
-        }else{
-            return false;
-        }
+    public void getFlowRate(){
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(1),KoflocDfSeries.STATE_ACQUISITION);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(2),KoflocDfSeries.STATE_ACQUISITION);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(3),KoflocDfSeries.STATE_ACQUISITION);
     }
 
     public boolean setFlowRate(int id,int rate){
@@ -46,7 +44,13 @@ public class MixGasModel implements KoflocDfSeriesListener{
 
     @Override
     public void onCompleteMessage(int id, String command, String code, int data) {
-        String string = command+code+String.valueOf(data);
+        seriesData.setInfo(id,command,code,data);
+        KoflocDfSeriesData.Controller controller = seriesData.getController(1);
+        String string = "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData())+"\n";
+        controller = seriesData.getController(2);
+        string += "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData())+"\n";
+        controller = seriesData.getController(3);
+        string += "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData())+"\n";
         listener.onFlowRateInfo(string);
     }
 }

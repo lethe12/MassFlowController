@@ -10,35 +10,86 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="当前流量:"
+        android:text="ID = 1 \nID = 2 \nID = 3\n"
         android:textColor="@android:color/black"
         android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etChannleOneFlowRate"
+        android:id="@+id/etChannelOneFlowRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:ems="4"
         android:inputType="number"
         android:maxLength="4"
+        android:text="100"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAcquisitionController" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAcquisitionController"
+        app:layout_constraintLeft_toRightOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/etChannelTwoFlowRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:ems="4"
+        android:inputType="number"
+        android:maxLength="4"
+        android:text="100"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/etChannelThreeFlowRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="-1dp"
+        android:ems="4"
+        android:inputType="number"
+        android:maxLength="4"
+        android:text="100"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <Button
-        android:id="@+id/btnSetFlowRate"
+        android:id="@+id/btnChannelOneSetFlowRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="0dp"
         android:text="确定"
         android:textSize="24sp"
-        app:layout_constraintLeft_toRightOf="@+id/etChannleOneFlowRate"
-        app:layout_constraintTop_toTopOf="@+id/etChannleOneFlowRate" />
+        app:layout_constraintLeft_toRightOf="@+id/etChannelOneFlowRate"
+        app:layout_constraintTop_toTopOf="@+id/etChannelOneFlowRate" />
+
+    <Button
+        android:id="@+id/btnChannelThreeSetFlowRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:text="确定"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/etChannelThreeFlowRate"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btnChannelTwoSetFlowRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:text="确定"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/etChannelTwoFlowRate"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <Button
         android:id="@+id/btnAcquisitionController"
@@ -50,4 +101,40 @@
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMassFlowControllerRealTimeInfo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="设置流量 通道1"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAcquisitionController" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="0dp"
+        android:text=" 通道2"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"
+        app:layout_constraintLeft_toRightOf="@+id/btnChannelOneSetFlowRate"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="0dp"
+        android:text=" 通道3"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"
+        app:layout_constraintLeft_toRightOf="@+id/btnChannelTwoSetFlowRate"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 </android.support.constraint.ConstraintLayout>

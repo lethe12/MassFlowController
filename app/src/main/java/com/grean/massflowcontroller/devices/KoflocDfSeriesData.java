@@ -1,27 +1,63 @@
 package com.grean.massflowcontroller.devices;
 
+import java.util.ArrayList;
+
 /**
  * Created by weifeng on 2018/12/14.
  */
 
 public class KoflocDfSeriesData {
-    int id;
-    int realTimeFlowRate;
+    private ArrayList<Controller> list = new ArrayList<>();
 
-    public KoflocDfSeriesData(int id){
-        this.id = id;
+    public KoflocDfSeriesData(){
+        list.add(new Controller(1));
+        list.add(new Controller(2));
+        list.add(new Controller(3));
     }
 
-    public int getId() {
-        return id;
+    public Controller getController(int id){
+        if((id>0)&&(id<4)){
+            return list.get(id-1);
+        }else{
+            return list.get(0);
+        }
+    }
+
+    public void setInfo(int id,String command,String code,int data){
+        if((id>0)&&(id<4)){
+            list.get(id-1).setInfo(command,code,data);
+        }
     }
 
 
-    public int getRealTimeFlowRate() {
-        return realTimeFlowRate;
-    }
+    public class Controller {
+        private int id;
+        private String command,code;
+        private int data;
+        public Controller(int id){
+            this.id = id;
+        }
 
-    public void setRealTimeFlowRate(int realTimeFlowRate) {
-        this.realTimeFlowRate = realTimeFlowRate;
+        protected void setInfo(String command,String code,int data){
+            this.command = command;
+            this.code = code;
+            this.data = data;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getCommand() {
+            return command;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public int getData() {
+            return data;
+        }
     }
 }
