@@ -9,6 +9,7 @@ import com.grean.massflowcontroller.devices.KoflocDfSeriesListener;
 
 /**
  * COM0 接质量流量计，id分别是 1,2,3
+ * 需要手动设置 WFSM 写 0 配置为Digital；WVSS 写 1 配置为Controlled；使用RCVS 读取为 1
  * Created by weifeng on 2018/12/14.
  */
 
@@ -29,6 +30,14 @@ public class MixGasModel implements KoflocDfSeriesListener{
         ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(1),KoflocDfSeries.STATE_ACQUISITION);
         ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(2),KoflocDfSeries.STATE_ACQUISITION);
         ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(3),KoflocDfSeries.STATE_ACQUISITION);
+    }
+
+    public void setControllerCommand(int id,String command,int data){
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSettingCommand(id,command,data),KoflocDfSeries.STATE_SETTING);
+    }
+
+    public void getSetting(int id,String command){
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSetting(id,command),KoflocDfSeries.STATE_READ_SETTING);
     }
 
     public boolean setFlowRate(int id,int rate){

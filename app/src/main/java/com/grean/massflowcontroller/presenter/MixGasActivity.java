@@ -18,7 +18,8 @@ import com.grean.massflowcontroller.model.MixGasModel;
  */
 
 public class MixGasActivity extends Activity implements View.OnClickListener,MixGasListener{
-    private EditText etChannelOneFlowRate,etChannelTwoFlowRate,etChannelThreeFlowRate;
+    private EditText etChannelOneFlowRate,etChannelTwoFlowRate,etChannelThreeFlowRate,
+            etSettingId,etSettingCommand,etSettingData;
     private TextView tvFlowRateInfo;
     private String flowRateInfo;
     private MixGasModel model;
@@ -47,10 +48,15 @@ public class MixGasActivity extends Activity implements View.OnClickListener,Mix
         etChannelOneFlowRate = findViewById(R.id.etChannelOneFlowRate);
         etChannelTwoFlowRate = findViewById(R.id.etChannelTwoFlowRate);
         etChannelThreeFlowRate = findViewById(R.id.etChannelThreeFlowRate);
+        etSettingId = findViewById(R.id.etSettingId);
+        etSettingCommand = findViewById(R.id.etSettingCommand);
+        etSettingData = findViewById(R.id.etSettingData);
         findViewById(R.id.btnAcquisitionController).setOnClickListener(this);
         findViewById(R.id.btnChannelOneSetFlowRate).setOnClickListener(this);
         findViewById(R.id.btnChannelTwoSetFlowRate).setOnClickListener(this);
         findViewById(R.id.btnChannelThreeSetFlowRate).setOnClickListener(this);
+        findViewById(R.id.btnSettingController).setOnClickListener(this);
+        findViewById(R.id.btnGetSetting).setOnClickListener(this);
         tvFlowRateInfo = findViewById(R.id.tvMassFlowControllerRealTimeInfo);
     }
 
@@ -69,16 +75,25 @@ public class MixGasActivity extends Activity implements View.OnClickListener,Mix
 
                 break;
             case R.id.btnChannelTwoSetFlowRate:
-                if(etChannelOneFlowRate.getText().toString()!=null) {
+                if(etChannelTwoFlowRate.getText().toString()!=null) {
                     rate = Integer.valueOf(etChannelTwoFlowRate.getText().toString());
                     model.setFlowRate(2, rate);
                 }
                 break;
             case R.id.btnChannelThreeSetFlowRate:
-                if(etChannelOneFlowRate.getText().toString()!=null) {
-                    rate = Integer.valueOf(etChannelOneFlowRate.getText().toString());
+                if(etChannelThreeFlowRate.getText().toString()!=null) {
+                    rate = Integer.valueOf(etChannelThreeFlowRate.getText().toString());
                     model.setFlowRate(3, rate);
                 }
+                break;
+            case R.id.btnSettingController:
+                model.setControllerCommand(Integer.valueOf(etSettingId.getText().toString()),
+                        etSettingCommand.getText().toString(),
+                        Integer.valueOf(etSettingData.getText().toString()));
+                break;
+            case R.id.btnGetSetting:
+                model.getSetting(Integer.valueOf(etSettingId.getText().toString()),
+                        etSettingCommand.getText().toString());
                 break;
             default:
                 break;

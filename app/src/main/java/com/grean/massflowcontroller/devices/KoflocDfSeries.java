@@ -10,7 +10,7 @@ import com.tools;
  */
 
 public class KoflocDfSeries implements SerialCommunicationListener{
-    public static final int STATE_ACQUISITION = 1,STATE_SETTING =2;
+    public static final int STATE_ACQUISITION = 1,STATE_SETTING =2,STATE_READ_SETTING = 3;
     private static final String tag = "KoflocDfSeries";
     private KoflocDfSeriesListener listener;
     public KoflocDfSeries(KoflocDfSeriesListener listener){
@@ -54,6 +54,15 @@ public class KoflocDfSeries implements SerialCommunicationListener{
         return getAcquisitionCmd(id,"RSFD");
     }
 
+    public static byte[] getSetting(int id,String command){
+        return getAcquisitionCmd(id,command);
+    }
+
+    public static byte[] getSettingCommand(int id,String cmd ,int data){
+        String dataString = String.format("%01d", data);
+        return getCmd(id,cmd,dataString);
+    }
+
     public static byte[] getFlowRateCmd(int id,int rate){
         String rateString = String.format("%04d", rate);
         return getCmd(id,"WSFD",rateString);
@@ -74,6 +83,10 @@ public class KoflocDfSeries implements SerialCommunicationListener{
             case STATE_SETTING:
                 listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
                         new String(rec,8,2),0);
+                break;
+            case STATE_READ_SETTING:
+                listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
+                        new String(rec,8,2), Integer.valueOf(new String(rec,10,1)));
                 break;
             default:
 

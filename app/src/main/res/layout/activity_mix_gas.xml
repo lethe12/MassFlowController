@@ -137,4 +137,63 @@
         android:textSize="36sp"
         app:layout_constraintLeft_toRightOf="@+id/btnChannelTwoSetFlowRate"
         app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btnSettingController"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:text="设置"
+        app:layout_constraintTop_toTopOf="@+id/etSettingId"
+        app:layout_constraintLeft_toRightOf="@+id/etSettingData" />
+
+    <EditText
+        android:id="@+id/etSettingId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="2"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/etSettingCommand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:ems="4"
+        android:inputType="text"
+        android:maxEms="4"
+        android:text="WFSM"
+        app:layout_constraintLeft_toRightOf="@+id/etSettingId"
+        app:layout_constraintTop_toTopOf="@+id/etSettingId" />
+
+    <EditText
+        android:id="@+id/etSettingData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:ems="4"
+        android:inputType="number"
+        android:maxEms="4"
+        android:text="1"
+        app:layout_constraintLeft_toRightOf="@+id/etSettingCommand"
+        app:layout_constraintTop_toTopOf="@+id/etSettingId" />
+
+    <Button
+        android:id="@+id/btnGetSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:text="读取设置"
+        app:layout_constraintLeft_toRightOf="@+id/btnSettingController"
+        app:layout_constraintTop_toTopOf="@+id/etSettingId" />
 </android.support.constraint.ConstraintLayout>
