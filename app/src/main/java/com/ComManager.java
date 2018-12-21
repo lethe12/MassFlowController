@@ -27,7 +27,7 @@ public class ComManager {
 
     public void sendFrame(int comNumber,byte [] buff,int state){
         if((comNumber>=0)&&(comNumber<4)){
-            coms[comNumber].addSendBuff(buff,state);
+            coms[comNumber].sendFrame(buff,state);
         }
     }
 
@@ -57,7 +57,7 @@ public class ComManager {
 
         @Override
         protected void communicationProtocol(byte[] rec, int size, int state) {
-            Log.d(tag,"sync"+tools.bytesToHexString(rec,size));
+            Log.d(tag,"sync"+String.valueOf(listeners[num]!=null)+tools.bytesToHexString(rec,size));
             if(listeners[num]!=null){
                 listeners[num].onCommunicationProtocol(rec,size,state);
             }

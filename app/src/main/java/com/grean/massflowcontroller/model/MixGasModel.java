@@ -26,28 +26,40 @@ public class MixGasModel implements KoflocDfSeriesListener{
         ComManager.getInstance().setListener(0,device);
     }
 
+    public void setControllerState(int id,int state){
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSettingValueStatus(id,state),KoflocDfSeries.STATE_ACQUISITION_OTHER);
+    }
+
     public void getFlowRate(){
-        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(1),KoflocDfSeries.STATE_ACQUISITION);
-        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(2),KoflocDfSeries.STATE_ACQUISITION);
-        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(3),KoflocDfSeries.STATE_ACQUISITION);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(1),KoflocDfSeries.STATE_ACQUISITION_SIGNED);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(2),KoflocDfSeries.STATE_ACQUISITION_SIGNED);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateAcquisition(3),KoflocDfSeries.STATE_ACQUISITION_SIGNED);
     }
 
     public void setControllerCommand(int id,String command,int data){
-        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSettingCommand(id,command,data),KoflocDfSeries.STATE_SETTING);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSettingShortCommand(id,command,data),KoflocDfSeries.STATE_ACQUISITION_OTHER);
+    }
+
+    public void setParameterCommand(int id,String command,int data){
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSettingLongCommand(id,command,data),KoflocDfSeries.STATE_ACQUISITION_OTHER);
     }
 
     public void getSetting(int id,String command){
-        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSetting(id,command),KoflocDfSeries.STATE_READ_SETTING);
+        ComManager.getInstance().sendFrame(0,KoflocDfSeries.getSetting(id,command),KoflocDfSeries.STATE_ACQUISITION_OTHER);
     }
 
     public boolean setFlowRate(int id,int rate){
         if((id>0)&&(id<=3)){
             Log.d(tag,"start to set");
-            ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateCmd(id,rate),KoflocDfSeries.STATE_SETTING);
+            ComManager.getInstance().sendFrame(0,KoflocDfSeries.getFlowRateCmd(id,rate),KoflocDfSeries.STATE_ACQUISITION_OTHER);
             return true;
         }else{
             return false;
         }
+    }
+
+    public String[] getControllerStates(){
+        return KoflocDfSeries.controllerStates;
     }
 
 
@@ -59,7 +71,12 @@ public class MixGasModel implements KoflocDfSeriesListener{
         controller = seriesData.getController(2);
         string += "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData())+"\n";
         controller = seriesData.getController(3);
-        string += "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData())+"\n";
+        string += "ID = "+String.valueOf(controller.getId())+"; Command = "+controller.getCommand()+";  ExitCode = "+controller.getCode()+"; Data = "+String.valueOf(controller.getData());
         listener.onFlowRateInfo(string);
+    }
+
+    @Override
+    public void onCompleteCommand(String command) {
+        listener.onCompleteCommand(command);
     }
 }

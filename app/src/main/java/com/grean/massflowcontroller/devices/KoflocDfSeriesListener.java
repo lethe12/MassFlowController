@@ -6,4 +6,5 @@ package com.grean.massflowcontroller.devices;
 
 public interface KoflocDfSeriesListener {
     void onCompleteMessage(int id,String command,String code,int data);
+    void onCompleteCommand(String command);
 }

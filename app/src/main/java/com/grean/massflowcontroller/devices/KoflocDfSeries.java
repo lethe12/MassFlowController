@@ -10,8 +10,13 @@ import com.tools;
  */
 
 public class KoflocDfSeries implements SerialCommunicationListener{
-    public static final int STATE_ACQUISITION = 1,STATE_SETTING =2,STATE_READ_SETTING = 3;
+    public static final int  STATE_SETTING = 2,//读取配置返回1位数据
+    STATE_ACQUISITION_LONG= 1,//读取配置，返回4位数据
+    STATE_ACQUISITION_SHORT =3,//读取配置返回1位数据
+    STATE_ACQUISITION_SIGNED = 4,
+    STATE_ACQUISITION_OTHER = 5;
     private static final String tag = "KoflocDfSeries";
+    public  static final String[] controllerStates ={"Fully open","Controlled","Fully closed"};
     private KoflocDfSeriesListener listener;
     public KoflocDfSeries(KoflocDfSeriesListener listener){
         this.listener = listener;
@@ -51,15 +56,25 @@ public class KoflocDfSeries implements SerialCommunicationListener{
     }
 
     public static byte[] getFlowRateAcquisition(int id){
-        return getAcquisitionCmd(id,"RSFD");
+        return getAcquisitionCmd(id,"RCFR");
+    }
+
+    public static byte[] getSettingValueStatus(int id,int status){
+        String string = String.format("%01d", status);
+        return getCmd(id,"WVSS",string);
     }
 
     public static byte[] getSetting(int id,String command){
         return getAcquisitionCmd(id,command);
     }
 
-    public static byte[] getSettingCommand(int id,String cmd ,int data){
+    public static byte[] getSettingShortCommand(int id,String cmd ,int data){
         String dataString = String.format("%01d", data);
+        return getCmd(id,cmd,dataString);
+    }
+
+    public static byte[] getSettingLongCommand(int id,String cmd ,int data){
+        String dataString = String.format("%04d", data);
         return getCmd(id,cmd,dataString);
     }
 
@@ -75,8 +90,9 @@ public class KoflocDfSeries implements SerialCommunicationListener{
 
     @Override
     public void onCommunicationProtocol(byte[] rec, int size, int state) {
+        Log.d(tag,"receive a frame;"+String.valueOf(size)+";"+String.valueOf(state));
         switch (state){
-            case STATE_ACQUISITION:
+            case STATE_ACQUISITION_LONG:
                 listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
                         new String(rec,8,2), Integer.valueOf(new String(rec,10,4)));
                 break;
@@ -84,9 +100,13 @@ public class KoflocDfSeries implements SerialCommunicationListener{
                 listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
                         new String(rec,8,2),0);
                 break;
-            case STATE_READ_SETTING:
+            case STATE_ACQUISITION_SHORT:
                 listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
                         new String(rec,8,2), Integer.valueOf(new String(rec,10,1)));
+                break;
+            case STATE_ACQUISITION_SIGNED:
+                listener.onCompleteMessage(Integer.valueOf(new String(rec,1,3)),new String(rec,4,4),
+                        new String(rec,8,2), Integer.valueOf(new String(rec,11,4)));
                 break;
             default:
 
@@ -94,6 +114,8 @@ public class KoflocDfSeries implements SerialCommunicationListener{
 
 
         }
+
+        listener.onCompleteCommand(new String(rec,0,size));
 
     }
 }
